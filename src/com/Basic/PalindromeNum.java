@@ -1,34 +1,50 @@
 package com.Basic;
-import java.util.Scanner;
+
+import java.util.Scanner; // Required to read user input
 
 public class PalindromeNum {
+
+    // YOUR BRUTE FORCE APPROACH
     public boolean isPalindrome(int x) {
-        // Special cases:
-        // Negative numbers and numbers ending in 0 (except 0 itself) are not palindromes
-        if (x < 0 || (x % 10 == 0 && x != 0)) {
+        if (x < 0) {
             return false;
         }
 
-        int revHalf = 0;
-        // Reverse the second half of the digits until it meets or exceeds the first half
-        while (x > revHalf) {
-            revHalf = (revHalf * 10) + (x % 10);
-            x /= 10;
-        }
+        char[] digits = String.valueOf(x).toCharArray();
+        int left = 0;
+        int right = digits.length - 1;
 
-        // For even length numbers: x == revHalf
-        // For odd length numbers: drop the middle digit via revHalf / 10 and compare
-        return x == revHalf || x == revHalf / 10;
+        while (left < right) {
+            if (digits[left] != digits[right]) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
     }
+
+    // MAIN METHOD WITH USER INPUT
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
         PalindromeNum solver = new PalindromeNum();
 
-        // Let's test it with a sample number
-        int testNumber = in.nextInt();
-        boolean result = solver.isPalindrome(testNumber);
+        // Create a Scanner object attached to system input
+        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Is " + testNumber + " a palindrome? " + result);
+        System.out.print("Enter an integer to check: ");
+
+        // Check if the user actually typed an integer to avoid crashing
+        if (scanner.hasNextInt()) {
+            int userInput = scanner.nextInt();
+
+            boolean result = solver.isPalindrome(userInput);
+
+            System.out.println("Is " + userInput + " a palindrome? -> " + result);
+        } else {
+            System.out.println("Error: Please enter a valid integer number next time.");
+        }
+
+        // Close the scanner resource
+        scanner.close();
     }
 }
-
